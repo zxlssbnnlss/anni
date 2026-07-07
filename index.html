@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>悦色美学 · 安妮 | 纹绣设计师 · 纹绣培训导师</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* 青蓝系 */
+  --deep-1: oklch(19% 0.035 232);      /* hero 最深 */
+  --deep-2: oklch(25% 0.05 228);
+  --deep-3: oklch(33% 0.065 224);
+  --teal:   oklch(58% 0.105 218);      /* 主青蓝 */
+  --teal-br:oklch(72% 0.125 205);      /* 科技感高光青 */
+  --teal-gl:oklch(78% 0.14 198);       /* glow */
+  --ink:    oklch(26% 0.02 236);       /* 正文深字 */
+  --ink-2:  oklch(45% 0.02 232);       /* 次级字 */
+  --ink-3:  oklch(62% 0.015 230);      /* 弱字 */
+  --paper:  oklch(97.5% 0.006 220);    /* 浅底纸 */
+  --paper-2:oklch(99% 0.004 220);      /* 卡面 */
+  --line:   oklch(90% 0.01 222);       /* 分隔线 */
+  --line-d: oklch(38% 0.03 226 / 0.4); /* 深底分隔线 */
+  --on-deep:oklch(94% 0.01 220);
+  --on-deep-2:oklch(72% 0.02 222);
+
+  --wrap: 1700px;
+  --pad: clamp(24px, 4vw, 80px);
+
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --ease-quart: cubic-bezier(0.25,1,0.5,1);
+
+  --f-serif: "Noto Serif SC", serif;
+  --f-sans: "Noto Sans SC", system-ui, sans-serif;
+  --f-mono: "Space Grotesk", monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--f-sans);
+  background:var(--paper);
+  color:var(--ink);
+  font-optical-sizing:auto;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3{text-wrap:balance;font-family:var(--f-serif);font-weight:500}
+p{text-wrap:pretty}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:var(--pad)}
+
+.eyebrow{
+  font-family:var(--f-mono);
+  font-size:.78rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  color:var(--teal);
+  display:inline-flex;align-items:center;gap:.7em;
+}
+.eyebrow::before{content:"";width:34px;height:1px;background:currentColor;opacity:.6}
+
+/* ============ NAV ============ */
+.nav{
+  position:fixed;inset:0 0 auto 0;z-index:100;
+  transition:background .5s var(--ease-out), border-color .5s var(--ease-out), backdrop-filter .5s;
+  border-bottom:1px solid transparent;
+}
+.nav.solid{
+  background:oklch(98% 0.005 220 / 0.85);
+  backdrop-filter:blur(18px) saturate(1.2);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);
+  height:86px;display:flex;align-items:center;justify-content:space-between;
+}
+.brand{display:flex;align-items:baseline;gap:.65rem;font-family:var(--f-serif)}
+.brand .zh{font-size:1.35rem;font-weight:600;letter-spacing:.08em;color:var(--on-deep);transition:color .5s}
+.brand .en{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.34em;color:var(--on-deep-2);text-transform:uppercase;transition:color .5s}
+.nav.solid .brand .zh{color:var(--ink)}
+.nav.solid .brand .en{color:var(--ink-3)}
+
+.nav-links{display:flex;align-items:center;gap:2.4rem}
+.nav-links a{
+  font-size:.9rem;letter-spacing:.04em;color:var(--on-deep-2);
+  position:relative;padding:.3rem 0;transition:color .35s var(--ease-out);
+}
+.nav-links a::after{
+  content:"";position:absolute;left:0;bottom:-2px;width:100%;height:1px;
+  background:var(--teal-br);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s var(--ease-out);
+}
+.nav-links a:hover{color:var(--on-deep)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav.solid .nav-links a{color:var(--ink-2)}
+.nav.solid .nav-links a:hover{color:var(--ink)}
+
+.btn{
+  font-family:var(--f-sans);font-size:.88rem;letter-spacing:.06em;
+  border:none;cursor:pointer;border-radius:2px;
+  display:inline-flex;align-items:center;gap:.6em;
+  transition:transform .4s var(--ease-out), background .4s, color .4s, box-shadow .4s;
+}
+.btn-primary{
+  background:var(--teal);color:oklch(99% 0 0);padding:.85rem 1.6rem;
+  box-shadow:0 4px 24px -8px oklch(58% 0.105 218 / 0.7);
+}
+.btn-primary:hover{background:var(--teal-br);transform:translateY(-2px);box-shadow:0 10px 34px -10px oklch(72% 0.125 205 / 0.8)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{
+  background:transparent;color:var(--on-deep);padding:.85rem 1.6rem;
+  border:1px solid var(--line-d);
+}
+.btn-ghost:hover{border-color:var(--teal-br);color:var(--teal-br);transform:translateY(-2px)}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;
+  background:radial-gradient(140% 120% at 78% 20%, var(--deep-3) 0%, var(--deep-2) 38%, var(--deep-1) 100%);
+  overflow:hidden;
+}
+#fx{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero-veil{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg, var(--deep-1) 0%, oklch(19% 0.035 232 / 0.5) 40%, transparent 70%);
+}
+.hero-inner{position:relative;z-index:2;width:100%;padding-top:86px}
+.hero-grid{max-width:var(--wrap);margin:0 auto;padding-inline:var(--pad)}
+
+.hero h1{
+  color:var(--on-deep);
+  font-size:clamp(3.2rem, 6.4vw, 6.6rem);
+  line-height:1.06;font-weight:500;letter-spacing:.01em;
+  margin:1.8rem 0 0;
+}
+.hero h1 .thin{font-weight:300;color:var(--on-deep-2)}
+.hero h1 em{
+  font-style:normal;color:var(--teal-br);
+}
+.hero-sub{
+  margin-top:2rem;max-width:52ch;
+  color:var(--on-deep-2);font-size:clamp(1rem,1.15vw,1.22rem);
+  font-weight:300;line-height:1.9;letter-spacing:.02em;
+}
+.hero-roles{
+  margin-top:2.4rem;display:flex;gap:0;flex-wrap:wrap;
+  font-family:var(--f-mono);font-size:.9rem;letter-spacing:.1em;color:var(--on-deep);
+}
+.hero-roles span{padding:0 1.4rem;position:relative}
+.hero-roles span:first-child{padding-left:0}
+.hero-roles span+span::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:14px;background:var(--line-d)}
+.hero-cta{margin-top:3.2rem;display:flex;gap:1rem;flex-wrap:wrap}
+
+.scroll-cue{
+  position:absolute;left:var(--pad);bottom:3rem;z-index:3;
+  display:flex;align-items:center;gap:.9rem;
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--on-deep-2);
+}
+.scroll-cue .track{width:46px;height:1px;background:var(--line-d);position:relative;overflow:hidden}
+.scroll-cue .track::after{content:"";position:absolute;inset:0;width:40%;background:var(--teal-br);animation:slide 2.4s var(--ease-quart) infinite}
+@keyframes slide{0%{transform:translateX(-100%)}60%,100%{transform:translateX(300%)}}
+
+/* stagger reveal */
+.rise{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease-out), transform .9s var(--ease-out);transition-delay:calc(var(--i,0)*90ms)}
+.rise.in{opacity:1;transform:none}
+
+/* ============ SECTION SHELL ============ */
+section{position:relative}
+.sec-head{max-width:var(--wrap);margin:0 auto;padding-inline:var(--pad)}
+.sec-title{font-size:clamp(2rem,3.4vw,3.2rem);line-height:1.12;color:var(--ink);margin-top:1.1rem;font-weight:500}
+.sec-title .accent{color:var(--teal)}
+
+/* ============ ABOUT ============ */
+.about{padding:clamp(90px,11vw,170px) 0}
+.about-grid{
+  max-width:var(--wrap);margin:3.6rem auto 0;padding-inline:var(--pad);
+  display:grid;grid-template-columns:minmax(0,0.82fr) minmax(0,1.18fr);gap:clamp(40px,5vw,90px);
+  align-items:start;
+}
+.portrait{
+  position:relative;aspect-ratio:3/4;border-radius:4px;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 30% 15%, var(--deep-3), var(--deep-1));
+  box-shadow:0 40px 80px -40px oklch(25% 0.05 228 / 0.6);
+}
+.portrait::after{
+  content:"人物照 / 头像";position:absolute;inset:0;display:flex;align-items:flex-end;
+  padding:1.4rem;color:var(--on-deep-2);font-family:var(--f-mono);font-size:.72rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  background:linear-gradient(0deg, oklch(19% 0.035 232 / 0.55), transparent 45%);
+}
+.portrait .ring{position:absolute;inset:0;pointer-events:none}
+.portrait .ring::before,.portrait .ring::after{
+  content:"";position:absolute;border:1px solid var(--teal-br);opacity:.5;
+}
+.portrait .ring::before{width:64px;height:64px;top:18px;left:18px;border-right:none;border-bottom:none}
+.portrait .ring::after{width:64px;height:64px;bottom:18px;right:18px;border-left:none;border-top:none}
+.portrait-tag{
+  position:absolute;top:20px;right:20px;z-index:2;
+  font-family:var(--f-mono);font-size:.66rem;letter-spacing:.22em;
+  color:var(--teal-gl);background:oklch(19% 0.035 232 / 0.55);
+  padding:.4rem .7rem;border:1px solid var(--line-d);border-radius:2px;
+}
+
+.about-lead{
+  font-family:var(--f-serif);font-weight:400;font-size:clamp(1.25rem,1.7vw,1.6rem);
+  line-height:1.75;color:var(--ink);letter-spacing:.01em;
+}
+.about-lead b{color:var(--teal);font-weight:600}
+.about-body{margin-top:1.5rem;max-width:62ch;color:var(--ink-2);font-weight:300;line-height:1.95;font-size:1.02rem}
+
+.creds{margin-top:2.6rem;border-top:1px solid var(--line)}
+.cred{
+  display:grid;grid-template-columns:auto 1fr auto;gap:1.4rem;align-items:baseline;
+  padding:1.05rem 0;border-bottom:1px solid var(--line);
+}
+.cred .no{font-family:var(--f-mono);font-size:.82rem;color:var(--teal);letter-spacing:.05em;font-variant-numeric:tabular-nums}
+.cred .role{font-size:1.02rem;color:var(--ink);font-weight:400}
+.cred .role small{display:block;color:var(--ink-3);font-size:.82rem;font-weight:300;margin-top:.2rem}
+.cred .tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;color:var(--ink-3);text-transform:uppercase;white-space:nowrap}
+
+.contact-inline{
+  margin-top:2.4rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+}
+.contact-inline .who{font-family:var(--f-serif);font-size:1.3rem;color:var(--ink);font-weight:500}
+.contact-inline .tel{
+  font-family:var(--f-mono);font-size:1.3rem;letter-spacing:.06em;color:var(--teal);
+  font-variant-numeric:tabular-nums;display:inline-flex;align-items:center;gap:.6rem;
+}
+
+.focus-strip{
+  max-width:var(--wrap);margin:clamp(50px,6vw,90px) auto 0;padding-inline:var(--pad);
+  display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);
+}
+.focus-strip .cell{padding:1.8rem 1.6rem 1.8rem 0;border-right:1px solid var(--line)}
+.focus-strip .cell:last-child{border-right:none}
+.focus-strip .k{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.2em;color:var(--ink-3);text-transform:uppercase}
+.focus-strip .v{font-family:var(--f-serif);font-size:1.7rem;color:var(--ink);margin-top:.5rem;font-weight:500}
+
+/* ============ WORKS ============ */
+.works{padding:clamp(90px,11vw,170px) 0;background:linear-gradient(180deg,var(--paper),oklch(96% 0.008 222))}
+.works-grid{
+  max-width:var(--wrap);margin:3.6rem auto 0;padding-inline:var(--pad);
+  display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(150px,auto);gap:22px;
+}
+.work{
+  position:relative;border-radius:4px;overflow:hidden;cursor:pointer;
+  background:var(--deep-2);min-height:280px;
+  transition:transform .6s var(--ease-out), box-shadow .6s var(--ease-out);
+}
+.work.feature{grid-column:span 2;grid-row:span 2}
+.work.tall{grid-row:span 2}
+.work .canvasart{position:absolute;inset:0;transition:transform 1.1s var(--ease-out)}
+.work:hover{box-shadow:0 40px 70px -34px oklch(25% 0.05 228 / 0.7)}
+.work:hover .canvasart{transform:scale(1.06)}
+.work .meta{
+  position:absolute;inset:auto 0 0 0;z-index:2;padding:1.6rem;
+  background:linear-gradient(0deg, oklch(19% 0.035 232 / 0.82), oklch(19% 0.035 232 / 0.2) 60%, transparent);
+}
+.work .idx{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.2em;color:var(--teal-gl)}
+.work .name{font-family:var(--f-serif);color:var(--on-deep);margin-top:.4rem;font-weight:500;line-height:1.2}
+.work.feature .name{font-size:2rem}
+.work .name{font-size:1.35rem}
+.work .desc{color:var(--on-deep-2);font-size:.86rem;font-weight:300;margin-top:.5rem;max-width:40ch;opacity:0;transform:translateY(8px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out)}
+.work:hover .desc{opacity:1;transform:none}
+.work .slot{
+  position:absolute;top:16px;left:16px;z-index:2;font-family:var(--f-mono);
+  font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--on-deep-2);
+  border:1px solid var(--line-d);padding:.3rem .55rem;border-radius:2px;
+}
+
+/* ============ STRENGTHS (bento) ============ */
+.strengths{padding:clamp(90px,11vw,170px) 0}
+.bento{
+  max-width:var(--wrap);margin:3.6rem auto 0;padding-inline:var(--pad);
+  display:grid;grid-template-columns:repeat(6,1fr);gap:22px;
+}
+.adv{
+  border:1px solid var(--line);border-radius:4px;background:var(--paper-2);
+  padding:2.2rem;display:flex;flex-direction:column;
+  transition:transform .5s var(--ease-out),border-color .5s,box-shadow .5s;position:relative;overflow:hidden;
+}
+.adv::before{
+  content:"";position:absolute;inset:0;opacity:0;transition:opacity .6s var(--ease-out);
+  background:radial-gradient(120% 100% at 100% 0%, oklch(72% 0.125 205 / 0.08), transparent 60%);
+}
+.adv:hover{transform:translateY(-4px);border-color:oklch(80% 0.04 216);box-shadow:0 30px 60px -38px oklch(58% 0.105 218 / 0.55)}
+.adv:hover::before{opacity:1}
+.adv .ico{width:46px;height:46px;border-radius:3px;display:grid;place-items:center;background:oklch(94% 0.02 216);color:var(--teal);margin-bottom:1.4rem}
+.adv h3{font-size:1.35rem;color:var(--ink);font-weight:500;line-height:1.3}
+.adv p{margin-top:.8rem;color:var(--ink-2);font-weight:300;line-height:1.8;font-size:.96rem}
+.adv .num{position:absolute;top:1.6rem;right:2rem;font-family:var(--f-mono);font-size:.78rem;color:var(--ink-3);letter-spacing:.1em}
+.adv.big{grid-column:span 3}
+.adv.med{grid-column:span 3}
+.adv.sm{grid-column:span 2}
+.adv.feature{
+  grid-column:span 6;background:var(--deep-2);border-color:transparent;
+  display:grid;grid-template-columns:1fr auto;align-items:center;gap:2rem;
+}
+.adv.feature::before{background:radial-gradient(90% 200% at 90% 50%, oklch(72% 0.125 205 / 0.18), transparent 60%);opacity:1}
+.adv.feature h3{color:var(--on-deep);font-size:clamp(1.6rem,2.4vw,2.4rem);position:relative}
+.adv.feature p{color:var(--on-deep-2);max-width:60ch;position:relative}
+.adv.feature .ico{background:oklch(33% 0.065 224);color:var(--teal-gl)}
+.adv.feature .big-mark{font-family:var(--f-mono);font-size:clamp(3rem,6vw,5.5rem);color:oklch(40% 0.06 222);font-weight:600;line-height:1;letter-spacing:-.02em;position:relative}
+
+/* ============ CONTACT (full screen) ============ */
+.contact{
+  min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;
+  background:radial-gradient(130% 120% at 20% 90%, var(--deep-3), var(--deep-1) 60%);
+}
+#fx2{position:absolute;inset:0;width:100%;height:100%}
+.contact-inner{position:relative;z-index:2;width:100%}
+.contact-wrap{max-width:var(--wrap);margin:0 auto;padding:6rem var(--pad)}
+.contact h2{
+  color:var(--on-deep);font-size:clamp(2.6rem,6vw,6rem);line-height:1.08;font-weight:500;
+  margin-top:1.6rem;
+}
+.contact h2 em{font-style:normal;color:var(--teal-br)}
+.contact-row{
+  margin-top:3.4rem;display:flex;gap:clamp(2rem,6vw,7rem);flex-wrap:wrap;align-items:flex-end;
+  padding-top:2.6rem;border-top:1px solid var(--line-d);
+}
+.cblock .lab{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--on-deep-2)}
+.cblock .val{margin-top:.7rem;color:var(--on-deep);font-size:clamp(1.4rem,2.4vw,2rem);font-family:var(--f-serif);font-weight:500}
+.cblock .val.tel{font-family:var(--f-mono);letter-spacing:.05em;color:var(--teal-br);font-variant-numeric:tabular-nums}
+.contact-foot{
+  max-width:var(--wrap);margin:0 auto;padding:2rem var(--pad) 2.6rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+  color:var(--on-deep-2);font-size:.82rem;letter-spacing:.04em;
+  position:relative;z-index:2;border-top:1px solid var(--line-d);
+}
+.contact-foot .en{font-family:var(--f-mono);letter-spacing:.2em;text-transform:uppercase;font-size:.72rem}
+
+/* ============ RESPONSIVE (PC 优先，窄屏兜底) ============ */
+@media (max-width:1180px){
+  .about-grid{grid-template-columns:1fr}
+  .portrait{max-width:440px}
+  .works-grid{grid-template-columns:repeat(2,1fr)}
+  .work.feature{grid-column:span 2}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .adv.big,.adv.med,.adv.sm,.adv.feature{grid-column:span 2}
+  .adv.feature{grid-template-columns:1fr}
+  .focus-strip{grid-template-columns:repeat(2,1fr)}
+  .focus-strip .cell:nth-child(2n){border-right:none}
+}
+@media (max-width:720px){
+  .nav-links{display:none}
+  .works-grid,.bento{grid-template-columns:1fr}
+  .work.feature,.work.tall{grid-column:span 1;grid-row:span 1}
+  .focus-strip{grid-template-columns:1fr}
+  .focus-strip .cell{border-right:none;border-bottom:1px solid var(--line)}
+  .hero-roles{font-size:.78rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+  .rise{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="zh">悦色美学</span>
+      <span class="en">Yuese Aesthetics</span>
+    </a>
+    <div class="nav-links">
+      <a href="#top">首页</a>
+      <a href="#about">关于安妮</a>
+      <a href="#works">精选作品</a>
+      <a href="#strengths">专业优势</a>
+      <a href="#contact">联系</a>
+    </div>
+    <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView()">
+      预约咨询 <i data-lucide="arrow-right" width="16" height="16"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <canvas id="fx"></canvas>
+  <div class="hero-veil"></div>
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <span class="eyebrow rise" style="--i:0">悦色美学 · 半永久容貌管理</span>
+      <h1 class="rise" style="--i:1">
+        让每一道轮廓<br>
+        <span class="thin">都成为</span><em>作品</em>
+      </h1>
+      <p class="hero-sub rise" style="--i:2">
+        专注高端私人超级野生眉设计，以骨相与气质为尺，以美学色彩为笔。十余年临床与教学沉淀，为每一位客人定制属于自己的容貌语言。
+      </p>
+      <div class="hero-roles rise" style="--i:3">
+        <span>纹绣设计师</span>
+        <span>纹绣培训导师</span>
+        <span>悦色美学创办人</span>
+      </div>
+      <div class="hero-cta rise" style="--i:4">
+        <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView()">预约安妮老师 <i data-lucide="arrow-up-right" width="16" height="16"></i></button>
+        <button class="btn btn-ghost" onclick="document.getElementById('works').scrollIntoView()">查看精选作品</button>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="track"></span>Scroll</div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="sec-head">
+    <span class="eyebrow rise">01 / 个人经历</span>
+    <h2 class="sec-title rise" style="--i:1">安妮 · <span class="accent">Annie</span></h2>
+  </div>
+
+  <div class="about-grid">
+    <div class="rise">
+      <figure class="portrait">
+        <span class="portrait-tag">ANNIE</span>
+        <span class="ring"></span>
+        <!-- 你后续上传人物照，替换此占位 -->
+      </figure>
+    </div>
+
+    <div>
+      <p class="about-lead rise" style="--i:1">
+        <b>悦色美学</b>创始人，原芯美昕整形医院纹绣总监。深耕半永久形象设计与容貌管理十余年，把技术、审美与个体气质融为一门可被定制的美学。
+      </p>
+      <p class="about-body rise" style="--i:2">
+        从临床一线到讲台，我始终相信纹绣不是复制流行，而是读懂一个人。一双眉、一抹唇、一套配色，都应该顺应你的骨相与神态，让美自然长在脸上，而不是贴上去。
+      </p>
+
+      <div class="creds rise" style="--i:3">
+        <div class="cred"><span class="no">01</span><span class="role">悦色美学 创始人</span><span class="tag">Founder</span></div>
+        <div class="cred"><span class="no">02</span><span class="role">原芯美昕整形医院 纹绣总监</span><span class="tag">Director</span></div>
+        <div class="cred"><span class="no">03</span><span class="role">资深半永久形象设计总监<small>资深半永久容貌管理专家</small></span><span class="tag">Senior</span></div>
+        <div class="cred"><span class="no">04</span><span class="role">亚洲网推荐纹绣名师</span><span class="tag">Featured</span></div>
+        <div class="cred"><span class="no">05</span><span class="role">中国风尚大赛 技术金奖</span><span class="tag">Gold Award</span></div>
+        <div class="cred"><span class="no">06</span><span class="role">2016 中国国际形象大赛 特邀评委<small>2016 世界纹绣大赛中国站 特邀评委</small></span><span class="tag">Judge</span></div>
+      </div>
+
+      <div class="contact-inline rise" style="--i:4">
+        <span class="who">安妮老师</span>
+        <a class="tel" href="tel:18754210852"><i data-lucide="phone" width="18" height="18"></i>187 5421 0852</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="focus-strip">
+    <div class="cell rise" style="--i:0"><div class="k">Project 01</div><div class="v">纹绣</div></div>
+    <div class="cell rise" style="--i:1"><div class="k">Project 02</div><div class="v">纹眉</div></div>
+    <div class="cell rise" style="--i:2"><div class="k">Project 03</div><div class="v">纹唇</div></div>
+    <div class="cell rise" style="--i:3"><div class="k">Project 04</div><div class="v">美学色彩搭配</div></div>
+  </div>
+</section>
+
+<!-- ============ WORKS ============ -->
+<section class="works" id="works">
+  <div class="sec-head">
+    <span class="eyebrow rise">02 / 精选项目</span>
+    <h2 class="sec-title rise" style="--i:1">作品，<span class="accent">是最好的语言</span></h2>
+  </div>
+
+  <div class="works-grid">
+    <article class="work feature rise" style="--i:0"><canvas class="canvasart" data-seed="1"></canvas>
+      <span class="slot">作品图 · 建议 1200×1200</span>
+      <div class="meta"><div class="idx">01</div><div class="name">超级野生眉设计</div><div class="desc">一人一眉，依据骨相、发际与神态量身定制，追求生长感与真实毛流。</div></div>
+    </article>
+    <article class="work tall rise" style="--i:1"><canvas class="canvasart" data-seed="2"></canvas>
+      <span class="slot">作品图</span>
+      <div class="meta"><div class="idx">02</div><div class="name">精致纹唇</div><div class="desc">冷暖肤色分析后调配唇色，自然透润。</div></div>
+    </article>
+    <article class="work rise" style="--i:2"><canvas class="canvasart" data-seed="3"></canvas>
+      <span class="slot">作品图</span>
+      <div class="meta"><div class="idx">03</div><div class="name">半永久纹眉</div></div>
+    </article>
+    <article class="work rise" style="--i:3"><canvas class="canvasart" data-seed="4"></canvas>
+      <span class="slot">作品图</span>
+      <div class="meta"><div class="idx">04</div><div class="name">美学色彩搭配</div></div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ STRENGTHS ============ -->
+<section class="strengths" id="strengths">
+  <div class="sec-head">
+    <span class="eyebrow rise">03 / 个人优势</span>
+    <h2 class="sec-title rise" style="--i:1">为什么选择<span class="accent">安妮</span></h2>
+  </div>
+
+  <div class="bento">
+    <div class="adv feature rise" style="--i:0">
+      <div>
+        <div class="ico"><i data-lucide="sparkles" width="24" height="24"></i></div>
+        <h3>高端私人超级野生眉设计</h3>
+        <p>不套模板、不复制流行。依据每个人的骨相、五官比例与神态定制眉形，模拟真实毛流，让眉自然生长在脸上。</p>
+      </div>
+      <div class="big-mark">01</div>
+    </div>
+
+    <div class="adv big rise" style="--i:1">
+      <div class="ico"><i data-lucide="palette" width="24" height="24"></i></div>
+      <span class="num">02</span>
+      <h3>美学色彩搭配</h3>
+      <p>冷暖肤色精准分析，眉、唇、瞳色协调统一，让整体气质更贴合本人。</p>
+    </div>
+
+    <div class="adv med rise" style="--i:2">
+      <div class="ico"><i data-lucide="stethoscope" width="24" height="24"></i></div>
+      <span class="num">03</span>
+      <h3>临床与教学双重沉淀</h3>
+      <p>原芯美昕整形医院纹绣总监，十余年一线经验，同时是纹绣培训导师。</p>
+    </div>
+
+    <div class="adv sm rise" style="--i:3">
+      <div class="ico"><i data-lucide="award" width="24" height="24"></i></div>
+      <span class="num">04</span>
+      <h3>权威赛事评委</h3>
+      <p>中国国际形象大赛、世界纹绣大赛中国站特邀评委。</p>
+    </div>
+
+    <div class="adv sm rise" style="--i:4">
+      <div class="ico"><i data-lucide="user-check" width="24" height="24"></i></div>
+      <span class="num">05</span>
+      <h3>容貌管理体系</h3>
+      <p>资深半永久容貌管理专家，从设计到养护的完整方案。</p>
+    </div>
+
+    <div class="adv sm rise" style="--i:5">
+      <div class="ico"><i data-lucide="graduation-cap" width="24" height="24"></i></div>
+      <span class="num">06</span>
+      <h3>纹绣培训导师</h3>
+      <p>将实战审美体系化输出，带出一批可独立接单的学员。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <canvas id="fx2"></canvas>
+  <div class="contact-inner">
+    <div class="contact-wrap">
+      <span class="eyebrow rise">04 / 联系方式</span>
+      <h2 class="rise" style="--i:1">让你的美，<br><em>从一次预约开始</em></h2>
+      <div class="contact-row rise" style="--i:2">
+        <div class="cblock"><div class="lab">咨询 / 预约</div><div class="val">安妮老师</div></div>
+        <div class="cblock"><div class="lab">电话 · Phone</div><a class="val tel" href="tel:18754210852">187 5421 0852</a></div>
+        <div class="cblock"><div class="lab">品牌 · Studio</div><div class="val">悦色美学</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-foot">
+    <span>© 2026 悦色美学 · 安妮 保留所有权利</span>
+    <span class="en">Yuese Aesthetics · Semi-Permanent Makeup</span>
+  </div>
+</section>
+
+<script>
+/* ---------- reveal on scroll ---------- */
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:0.12});
+document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+
+/* ---------- nav solid state ---------- */
+const nav=document.getElementById('nav');
+const onScroll=()=>{nav.classList.toggle('solid',window.scrollY>window.innerHeight*0.72)};
+onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+
+/* ---------- hero flowing tech background (canvas，占位于视频，可后续替换为 <video>) ---------- */
+function flowField(canvas,opts){
+  const ctx=canvas.getContext('2d');
+  let w,h,dpr,particles=[];
+  const N=opts.n||90;
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    w=canvas.clientWidth;h=canvas.clientHeight;
+    canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function seed(){
+    particles=[];
+    for(let i=0;i<N;i++){particles.push({x:Math.random()*w,y:Math.random()*h,vx:0,vy:0,life:Math.random()})}
+  }
+  function noise(x,y,t){return Math.sin(x*0.0016+t)*Math.cos(y*0.0018-t*0.8)+Math.sin((x+y)*0.001+t*0.5)}
+  let t=0;
+  function frame(){
+    t+=0.0022;
+    ctx.fillStyle='rgba(11,24,34,0.10)';ctx.fillRect(0,0,w,h);
+    for(const p of particles){
+      const a=noise(p.x,p.y,t)*Math.PI*1.4;
+      p.vx=p.vx*0.86+Math.cos(a)*0.5;
+      p.vy=p.vy*0.86+Math.sin(a)*0.5;
+      const px=p.x,py=p.y;
+      p.x+=p.vx;p.y+=p.vy;p.life-=0.004;
+      if(p.x<0||p.x>w||p.y<0||p.y>h||p.life<0){p.x=Math.random()*w;p.y=Math.random()*h;p.vx=p.vy=0;p.life=1}
+      const alpha=Math.min(p.life,0.5)*opts.alpha;
+      ctx.strokeStyle=`oklch(${opts.L}% ${opts.C} ${opts.H} / ${alpha})`;
+      ctx.lineWidth=opts.lw;
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(p.x,p.y);ctx.stroke();
+    }
+    requestAnimationFrame(frame);
+  }
+  resize();seed();frame();
+  window.addEventListener('resize',()=>{resize();seed()});
+}
+flowField(document.getElementById('fx'),{n:110,alpha:0.7,L:76,C:0.13,H:203,lw:1.1});
+flowField(document.getElementById('fx2'),{n:80,alpha:0.5,L:72,C:0.12,H:210,lw:1});
+
+/* ---------- work card generative art (占位，替换为真实作品图) ---------- */
+document.querySelectorAll('.canvasart').forEach(cv=>{
+  const ctx=cv.getContext('2d');
+  const seed=+cv.dataset.seed||1;
+  function draw(){
+    const r=cv.parentElement.getBoundingClientRect();
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.width=r.width*dpr;cv.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    const w=r.width,h=r.height;
+    const hues=[228,214,206,220];const H=hues[(seed-1)%hues.length];
+    const g=ctx.createLinearGradient(0,0,w,h);
+    g.addColorStop(0,`oklch(34% 0.06 ${H})`);
+    g.addColorStop(1,`oklch(20% 0.04 ${H+6})`);
+    ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    // 柔和光晕
+    const rg=ctx.createRadialGradient(w*0.7,h*0.25,10,w*0.7,h*0.25,Math.max(w,h)*0.7);
+    rg.addColorStop(0,`oklch(72% 0.13 ${H-14} / 0.35)`);rg.addColorStop(1,'transparent');
+    ctx.fillStyle=rg;ctx.fillRect(0,0,w,h);
+    // 细线纹理
+    ctx.strokeStyle=`oklch(78% 0.13 200 / 0.16)`;ctx.lineWidth=1;
+    for(let i=0;i<7;i++){
+      ctx.beginPath();
+      for(let x=0;x<=w;x+=8){
+        const y=h*0.5+Math.sin(x*0.012+i*0.9+seed)*22*Math.sin(i)+ (i-3)*h*0.11;
+        x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+  }
+  draw();window.addEventListener('resize',draw);
+});
+
+/* ---------- lucide ---------- */
+if(window.lucide)lucide.createIcons();
+</script>
+</body>
+</html>
